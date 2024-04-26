@@ -1,14 +1,15 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="https://mad-srv.informatik.uni-erlangen.de/InnoLab/ss24/xitaso/-/wikis/uploads/5e364a48a092b233a8b2c6ac94507011/OptiFox.png" alt="Logo" width="80" height="80">
+  <a href="https://mad-srv.informatik.uni-erlangen.de/InnoLab/ss24/xitaso">
+    <img src="https://mad-srv.informatik.uni-erlangen.de/InnoLab/ss24/xitaso/-/wikis/uploads/5e364a48a092b233a8b2c6ac94507011/OptiFox.png" alt="Logo" width="160" height="160">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">OptiFox(Xitaso)</h3>
 
-  <p align="center">
-    project_description
+  <p align="left">
+    This project aims to build an innovative digital assistant designed to enhance decision-making in intensive care units (ICUs) through advanced predictive analytics.
+
   </p>
 </div>
 
@@ -58,7 +59,7 @@ Give a brief introduction into the project.
 
 Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://mad-srv.informatik.uni-erlangen.de/InnoLab/ss24/xitaso](https://mad-srv.informatik.uni-erlangen.de/InnoLab/ss24/xitaso)
 
 
 <!-- GETTING STARTED -->
