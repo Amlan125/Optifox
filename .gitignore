@@ -1,6 +1,7 @@
 # Editors
 .vscode/
 .idea/
+*:Zone.Identifier
 
 # Vagrant
 .vagrant/
