@@ -50,7 +50,7 @@ Give a brief introduction into the project.
 
 ### Built With
 
-* []
+* [] Python 3.10
 * []
 * []
 
@@ -93,8 +93,53 @@ This is an example of how to list things you need to use the software and how to
 
 <!-- USAGE EXAMPLES -->
 ## Project Structure
-Give a brief overview of the project's structure by visualising the (sub-)folder structure and how files interact with each other. 
+Give a brief overview of the project's structure by visualising the (sub-)folder structure and how files interact with each other.
 
+Xitaso/
+├── code/
+│ ├── server.py
+│ ├── templates/
+│ │ └── patient_page.html
+│ └── static/
+│ ├── css/
+│ │ └── styles.css
+│ └── js/
+│ └── script.js
+├── data/
+├── models/
+├── references/
+├── reports/
+├── src/
+├── tests/
+│ └── test_server.py
+├── requirements.txt
+├── .devcontainer/
+├── Dockerfile
+├── README.md
+
+
+- **code/**: Directory for the project's source code.
+    - **server.py**: Contains the Flask application code.
+    - **templates/**: Directory for HTML templates.
+    - **static/**: Directory for static files like CSS and JavaScript.
+        - **css/**: CSS files for styling.
+        - **js/**: JavaScript files for interactivity.
+- **data/**: Directory for data files used in the project (MIMIC IV).
+- **models/**: Directory for machine learning models or other saved models.
+- **references/**: Directory for reference materials or documentation.
+- **reports/**: Directory for project reports or documentation.
+- **src/**: Directory for any additional source code or libraries to produce preprocessing data.
+- **tests/**: Directory for test cases.
+    - **test_server.py**: Test cases for the Flask application.
+- **requirements.txt**: File containing dependencies required to run the project.
+- **.devcontainer/**: Directory containing configuration files for development container settings.
+- **Dockerfile**: File containing instructions to build a Docker image for the project.
+- **README.md**: Documentation for the project.
+
+<!-- ROAD MAP -->
+## Project Road map
+
+![Project RoadMap](Code/static/img/roadmap.png)
 
 
 <!-- USAGE EXAMPLES -->
@@ -105,6 +150,15 @@ Use this space to show useful examples of how a project can be used. Additional 
 _For more examples, please refer to the [Documentation](https://github.com/github_username/repo_name/-/wikis/)_
 
 
+<!-- Contributing -->
+
+## Contributing
+
+Contributions to the project are welcome! When submitting a merge request, please ensure the following:
+
+1. File Organization: Place new files in their appropriate directories according to the project structure outlined above.
+
+2. Test Cases: Include test cases that cover the changes introduced by your merge request in the tests/ directory.
 
 <!-- LICENSE -->
 ## License
