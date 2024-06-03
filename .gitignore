@@ -109,6 +109,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+builds/
 
 # Spyder project settings
 .spyderproject
@@ -126,3 +127,4 @@ venv.bak/
 dmypy.json
 
 # add personal files
+gitlab-runner*
