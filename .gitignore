@@ -12,6 +12,12 @@
 # Windows
 Thumbs.db
 
+#frontendUI depandancies
+.frontendUI/node_modules
+.frontendUI/package_lock.json
+.frontendUI/package.json
+.frontendUI/my-app/node_modules
+
 # Source for the following rules: https://raw.githubusercontent.com/github/gitignore/master/Python.gitignore
 # Byte-compiled / optimized / DLL files
 __pycache__/
