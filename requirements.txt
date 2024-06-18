@@ -33,10 +33,13 @@ hydra-core>=1.1.0
 hydra_colorlog
 rich~=13.7.1
 
-# others
+# API
 tqdm~=4.66.4
 pytest==8.2.1
 Flask==3.0.3
+Flask-RESTful==0.3.10
+connexion[flask]==3.1.0
+connexion[uvicorn] == 3.1.0
 
 #preprocessing
 holidays~=0.48

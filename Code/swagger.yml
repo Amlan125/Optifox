@@ -1,0 +1,94 @@
+openapi: 3.0.0
+info:
+  title: "OptiFox REST API"
+  description: "An API to fetch information for the PhysioNet DB and predict mortality and readmission rate"
+  version: "1.0.0"
+servers:
+  - url: "/api/v1"
+components:
+  schemas:
+    Patient:
+      type: "object"
+      required:
+        - stay_id
+        - hadm_id
+        - subject_id
+        - age
+        - first_care_unit
+        - intime
+        - outtime
+        - los_hour_int
+        - will_be_readmitted
+      properties:
+        age:
+          type: integer
+          example: 46
+        first_care_unit:
+          type: string
+          example: "Medical/Surgical Intensive Care Unit (MICU/SICU)"
+        first_name:
+          type: string
+          nullable: true
+          example: "Purushotham"
+        gender:
+          type: string
+          nullable: true
+          example: "M"
+        hadm_id:
+          type: integer
+          example: 25563031
+        intime:
+          type: string
+          format: date-time
+          example: "2110-04-11T15:52:22Z"
+        last_name:
+          type: string
+          nullable: true
+          example: "Koduri"
+        los_hour_int:
+          type: number
+          format: float
+          example: 1.338587962962963
+        main_diagnosis:
+          type: string
+          nullable: true
+          example: ""
+        outtime:
+          type: string
+          format: date-time
+          example: "2110-04-12T23:59:56Z"
+        stay_id:
+          type: integer
+          example: 31205490
+        subject_id:
+          type: integer
+          example: 10001725
+        will_be_readmitted:
+          type: boolean
+          example: false
+  parameters:
+    stay_id:
+      name: "stay_id"
+      description: "The ICU Stay id of the patient"
+      in: path
+      required: true
+      schema:
+        type: integer
+paths:
+  /patient/{stay_id}:
+    get:
+      operationId: "patient_info.read_stayid"
+      tags:
+        - "Patient"
+      summary: "Fetch information of a patient"
+      parameters:
+        - $ref: "#/components/parameters/stay_id"
+      responses:
+        "200":
+          description: "Successfully read patient information"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Patient"
+        "404":
+          description: "Patient not found"

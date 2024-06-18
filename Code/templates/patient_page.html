@@ -3,17 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to My Wacky Website!</title>
-    <!-- Link to external CSS file for styling -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Patient Details</title>
 </head>
 <body>
-    <h1>Welcome to the Xitaso Patient's Page!</h1>
-    <img src="static/img/OptiFox1.png" alt="Logo">
-    <footer>
-        <p>Created with ❤️ by a very normal human. Promise.</p>
-    </footer>
-    <!-- Link to external JavaScript file for adding interactivity -->
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <h1>Patient Details</h1>
+    <input type="number" id="stay_id" placeholder="Enter ICU Stay ID">
+    <button onclick="fetchPatientDetails()">Get Details</button>
+
+    <div id="patient-details"></div>
+
+    <script>
+        async function fetchPatientDetails() {
+            const stayId = document.getElementById('stay_id').value;
+            if (!stayId) {
+                alert('Please enter a valid ICU Stay ID');
+                return;
+            }
+
+            try {
+                const response = await fetch(`api/v1/patient/${stayId}`);
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const patient = await response.json();
+                displayPatientDetails(patient);
+            } catch (error) {
+                alert('Error fetching patient details: ' + error.message);
+            }
+        }
+
+        function displayPatientDetails(patient) {
+            const detailsDiv = document.getElementById('patient-details');
+            detailsDiv.innerHTML = `
+                <p><strong>Subject ID:</strong> ${patient.subject_id}</p>
+                <p><strong>Hospital Admission ID:</strong> ${patient.hadm_id}</p>
+                <p><strong>Stay ID:</strong> ${patient.stay_id}</p>
+                <p><strong>First Care Unit:</strong> ${patient.first_care_unit}</p>
+                <p><strong>Length of Stay (hours):</strong> ${patient.los_hour_int}</p>
+                <p><strong>Gender:</strong> ${patient.gender}</p>
+                <p><strong>Age:</strong> ${patient.age}</p>
+                <p><strong>First Name:</strong> ${patient.first_name}</p>
+                <p><strong>Last Name:</strong> ${patient.last_name}</p>
+                <p><strong>Main Diagnosis:</strong> ${patient.main_diagnosis}</p>
+                <p><strong>Will be Readmitted:</strong> ${patient.will_be_readmitted}</p>
+                <p><strong>Intime:</strong> ${patient.intime}</p>
+                <p><strong>Outtime:</strong> ${patient.outtime}</p>
+            `;
+        }
+    </script>
 </body>
 </html>
