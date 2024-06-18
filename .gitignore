@@ -134,3 +134,4 @@ dmypy.json
 
 # add personal files
 gitlab-runner*
+test.py
