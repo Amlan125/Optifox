@@ -31,7 +31,7 @@ const PatientPage: React.FC = () => {
         <div style={{ gridColumn: '3 / 5', gridRow: '2 / 4' }}></div>
 
         <div style={{ gridColumn: '1 / 2', gridRow: '4 / 6' }}>
-          <ReadmissionComponent data={readmissionData} DarkMode={isDarkMode} />
+          <ReadmissionComponent data={readmissionData} isDarkMode={isDarkMode} />
         </div>
 
         <div style={{ gridColumn: '2 / 3', gridRow: '4 / 6' }}>
