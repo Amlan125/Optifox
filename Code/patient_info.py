@@ -7,7 +7,7 @@ import os
 import pandas as pd
 from dataclasses import dataclass
 from pathlib import Path
-from .utils import find_matching_file, replace_nan_with_none
+from utils import find_matching_file, replace_nan_with_none
 from flask import abort, jsonify
 from typing import Dict
 
@@ -144,7 +144,10 @@ def fetch_patient_features(stay_id: int, features: list) -> TimeSeriesFeature:
         TimeSeriesFeature:
             A Patient TimeSeriesFeature instance with parsed information.
     """
+    print(features)
     icutime = pd.read_feather(ICU_TIMESERIES)
+
+    final_dict = {"stay_id": stay_id}
 
     # Filter patient record based on ICU stay ID
     patient_record = icutime[icutime["stay_id"] == stay_id]
@@ -152,29 +155,21 @@ def fetch_patient_features(stay_id: int, features: list) -> TimeSeriesFeature:
         return None
     selected_columns = ["abs_event_time"] + features
     filtered_data = patient_record[selected_columns]
+    filtered_data = replace_nan_with_none(filtered_data.to_dict())
+    final_dict.update(filtered_data)
 
-    # Replace NaN values with None
-    filtered_data = filtered_data.apply(lambda x: x.map(lambda y: None if pd.isna(y) else y))
-    timeseries_features = [
-        TimeSeriesFeature(
-            icu_stay_id=stay_id,
-            time=row["abs_event_time"],
-            features={feature: row[feature] for feature in features},
-        )
-        for _, row in filtered_data.iterrows()
-    ]
-
-    return timeseries_features
+    return final_dict
 
 
-def get_time_series_data(stay_id: int, features: list[str]):
+def get_time_series_data(stay_id: int, features: str):
+    features_list = features.split(",")
     if not stay_id:
         abort(400, description="Missing required parameter: stay_id")
 
     if not features:
         abort(400, description="Missing required parameter: features")
 
-    data = fetch_patient_features(stay_id, features)
+    data = fetch_patient_features(stay_id, features_list)
     if not data:
         abort(404, description="Time series data not found for the specified stay_id")
 
