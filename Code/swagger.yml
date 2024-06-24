@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: "OptiFox REST API"
+  description: "An API to fetch information for the PhysioNet DB and predict mortality and readmission rate"
+  version: "1.0.0"
+servers:
+  - url: "/api/v1"
+components:
+  schemas:
+    Patient:
+      type: "object"
+      required:
+        - stay_id
+        - hadm_id
+        - subject_id
+        - age
+        - first_care_unit
+        - intime
+        - outtime
+        - los_hour_int
+        - will_be_readmitted
+      properties:
+        age:
+          type: integer
+          example: 46
+        first_care_unit:
+          type: string
+          example: "Medical/Surgical Intensive Care Unit (MICU/SICU)"
+        first_name:
+          type: string
+          nullable: true
+          example: "Purushotham"
+        gender:
+          type: string
+          nullable: true
+          example: "M"
+        hadm_id:
+          type: integer
+          example: 25563031
+        intime:
+          type: string
+          format: date-time
+          example: "2110-04-11T15:52:22Z"
+        last_name:
+          type: string
+          nullable: true
+          example: "Koduri"
+        los_hour_int:
+          type: number
+          format: float
+          example: 1.338587962962963
+        main_diagnosis:
+          type: string
+          nullable: true
+          example: ""
+        outtime:
+          type: string
+          format: date-time
+          example: "2110-04-12T23:59:56Z"
+        stay_id:
+          type: integer
+          example: 31205490
+        subject_id:
+          type: integer
+          example: 10001725
+        will_be_readmitted:
+          type: boolean
+          example: false
+    TimeSeriesFeature:
+      type: object
+      properties:
+        features:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              values:
+                type: array
+                items:
+                  type: number
+                  nullable: true
+        abs_event_time:
+          type: object
+          additionalProperties:
+            type: string
+            format: date-time
+        stay_id:
+          type: integer
+          example: 30057454
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message describing the issue.
+  parameters:
+    stay_id:
+      name: "stay_id"
+      description: "The ICU Stay id of the patient"
+      in: path
+      required: true
+      schema:
+        type: integer
+paths:
+  /patient/{stay_id}:
+    get:
+      operationId: "patient_info.read_stayid"
+      tags:
+        - "Patient"
+      summary: "Fetch information of a patient"
+      parameters:
+        - $ref: "#/components/parameters/stay_id"
+      responses:
+        "200":
+          description: "Successfully read patient information"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Patient"
+        "404":
+          description: "Patient not found"
+  /patient/{stay_id}/{features}:
+    get:
+      operationId: "patient_info.get_time_series_data"
+      tags:
+        - "TimeSeriesFeature"
+      summary: Fetch time series data for a patient
+      description: Retrieves time series data for specific features of a patient based on ICU stay ID.
+      parameters:
+        - name: stay_id
+          in: path
+          required: true
+          description: ICU stay ID of the patient.
+          schema:
+            type: integer
+        - name: features
+          in: path
+          required: true
+          description: Comma-separated list of feature names to retrieve, space counts as a seperate character, refer to the time series features in 'training_config.yaml' to see the list of possible features to pull.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response with time series data.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimeSeriesFeature"
+        "400":
+          description: Bad request, missing required parameter(s).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not found, time series data not available for the specified stay ID.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
