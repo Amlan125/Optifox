@@ -1,5 +1,3 @@
-// PatientTable.tsx
-
 import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid } from '@mui/material';
 
@@ -17,9 +15,9 @@ const Mortalitydata = [
 
 const PatientTable: React.FC = () => {
   return (
-    <Grid container spacing={15} justifyContent="center">
+    <Grid container spacing={5} justifyContent="center">
       <Grid item xs={6}>
-        <TableContainer component={Paper} style={{ marginTop: '20px' }}>
+        <TableContainer component={Paper} style={{ width: '70%', margin: '20px auto' }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -40,7 +38,7 @@ const PatientTable: React.FC = () => {
       </Grid>
 
       <Grid item xs={6}>
-        <TableContainer component={Paper} style={{ marginTop: '20px' }}>
+        <TableContainer component={Paper} style={{ width: '70%', margin: '20px auto' }}>
           <Table>
             <TableHead>
               <TableRow>
