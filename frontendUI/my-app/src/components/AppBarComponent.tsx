@@ -34,7 +34,7 @@ const AppBarComponent: React.FC = () => {
             color: isDarkMode ? "#ffffff" : "#121212",
           }}
         >
-          XITASO
+          OPTIFOX
         </Typography>
         {/* Menu */}
         <Menu
