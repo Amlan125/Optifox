@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 const Readmissiondata = [
   { date: '03/06/2024', readmissionLikelihood: true },
@@ -7,7 +7,7 @@ const Readmissiondata = [
   { date: '01/06/2024', readmissionLikelihood: false },
 ];
 
-const Mortalitydata = [
+const MortalityData = [
   { date: '03/06/2024', mortalityLikelihood: true },
   { date: '02/06/2024', mortalityLikelihood: true },
   { date: '01/06/2024', mortalityLikelihood: false },
@@ -15,49 +15,47 @@ const Mortalitydata = [
 
 const PatientTable: React.FC = () => {
   return (
-    <Grid container spacing={5} justifyContent="center">
-      <Grid item xs={6}>
-        <TableContainer component={Paper} style={{ width: '70%', margin: '20px auto' }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell>Readmission Likelihood</TableCell>
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      {/* Readmission Table */}
+      <TableContainer component={Paper} style={{ width: '45%', marginTop: '20px' }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Date</TableCell>
+              <TableCell>Readmission Likelihood</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {Readmissiondata.map((row, index) => (
+              <TableRow key={index} style={{ backgroundColor: row.readmissionLikelihood ? 'red' : 'green' }}>
+                <TableCell>{row.date}</TableCell>
+                <TableCell>{row.readmissionLikelihood.toString()}</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {Readmissiondata.map((row, index) => (
-                <TableRow key={index} style={{ backgroundColor: row.readmissionLikelihood ? 'red' : 'green' }}>
-                  <TableCell>{row.date}</TableCell>
-                  <TableCell>{row.readmissionLikelihood.toString()}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Grid>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-      <Grid item xs={6}>
-        <TableContainer component={Paper} style={{ width: '70%', margin: '20px auto' }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell>Mortality Likelihood</TableCell>
+      {/* Mortality Table */}
+      <TableContainer component={Paper} style={{ width: '45%', marginTop: '20px' }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Date</TableCell>
+              <TableCell>Mortality Likelihood</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {MortalityData.map((row, index) => (
+              <TableRow key={index} style={{ backgroundColor: row.mortalityLikelihood ? 'red' : 'green' }}>
+                <TableCell>{row.date}</TableCell>
+                <TableCell>{row.mortalityLikelihood.toString()}</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {Mortalitydata.map((row, index) => (
-                <TableRow key={index} style={{ backgroundColor: row.mortalityLikelihood ? 'red' : 'green' }}>
-                  <TableCell>{row.date}</TableCell>
-                  <TableCell>{row.mortalityLikelihood.toString()}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Grid>
-    </Grid>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 };
 

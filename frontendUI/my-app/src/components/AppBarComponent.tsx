@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Menu, MenuItem } from '@mui/material';
 import ThemeToggle from './ThemeToggle';
@@ -21,7 +23,7 @@ const AppBarComponent: React.FC = () => {
   const searchPatient = async (term: string) => {
     try {
       console.log('Searching...', term);
-      const response = await fetch(`http://127.0.0.1:8000/api/v1/patient/${term}`);
+      const response = await fetch(`/api/v1/patient/${term}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -77,6 +79,7 @@ const AppBarComponent: React.FC = () => {
         <SearchPatient onSearch={searchPatient} isDarkMode={isDarkMode} />
       </Toolbar>
     </AppBar>
+    
   );
 };
 
