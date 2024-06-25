@@ -6,6 +6,10 @@ info:
 servers:
   - url: "/api/v1"
 components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
   schemas:
     Patient:
       type: "object"

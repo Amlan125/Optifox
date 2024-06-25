@@ -37,7 +37,10 @@ const AppBarComponent: React.FC = () => {
   const appBarBackgroundColor = isDarkMode ? '#121212' : '#03acab';
 
   return (
-    <AppBar position="static" style={{ backgroundColor: appBarBackgroundColor }}>
+    <AppBar
+      position="static"
+      style={{ backgroundColor: appBarBackgroundColor }}
+    >
       <Toolbar>
         <Typography variant="h6" onClick={handleMenu} style={{ cursor: 'pointer', color: isDarkMode ? '#ffffff' : '#121212' }}>
           Stay ID
@@ -46,19 +49,19 @@ const AppBarComponent: React.FC = () => {
           id="menu-appbar"
           anchorEl={anchorEl}
           anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
+            vertical: "top",
+            horizontal: "left",
           }}
           keepMounted
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
+            vertical: "top",
+            horizontal: "left",
           }}
           open={Boolean(anchorEl)}
           onClose={handleClose}
           style={{
-            backgroundColor: 'transparent',
-            marginTop: '32px',
+            backgroundColor: "transparent",
+            marginTop: "32px",
           }}
         >
           {patientInfo && (
