@@ -14,7 +14,7 @@ const PatientPage: React.FC = () => {
     setLoading(true);
     try {
       const endpoint = `/api/v1/patient/${searchTerm}`;
-      console.log('Fetching from PatietPage:', endpoint);
+      console.log('Fetching from PatientPage:', endpoint);
       console.log('Searching patient with term:', searchTerm);
       const response = await fetch(endpoint);
       console.log('Response status:', response.status);
@@ -77,20 +77,18 @@ const PatientPage: React.FC = () => {
         {patientInfo && renderJSON(patientInfo)}
         
         {/* Patient Information Card */}
-        {patientInfo && (
           <Card style={{ width: '100%' }}>
             <CardContent>
               <Typography variant="h5" gutterBottom> Patient Information </Typography>
-              <Typography><strong>Search Term:</strong> {patientInfo.searchTerm}</Typography>
-              <Typography><strong>Name:</strong> {patientInfo.name}</Typography>
-              <Typography><strong>Age:</strong> {patientInfo.age}</Typography>
-              <Typography><strong>Gender:</strong> {patientInfo.gender}</Typography>
-              <Typography><strong>ICU Length of Stay:</strong> {patientInfo.icuLengthOfStay}</Typography>
-              <Typography><strong>In Time:</strong> {formatDate(patientInfo.intime)}</Typography>
-              <Typography><strong>Out Time:</strong> {formatDate(patientInfo.outtime)}</Typography>
+              <Typography><strong>Search Term:</strong></Typography>
+              <Typography><strong>Name:</strong></Typography>
+              <Typography><strong>Age:</strong></Typography>
+              <Typography><strong>Gender:</strong> </Typography>
+              <Typography><strong>ICU Length of Stay:</strong></Typography>
+              <Typography><strong>In Time:</strong></Typography>
+              <Typography><strong>Out Time:</strong></Typography>
             </CardContent>
           </Card>
-        )}
       </div>
 
       {/* Table row */}
