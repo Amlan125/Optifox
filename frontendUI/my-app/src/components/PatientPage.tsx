@@ -108,7 +108,6 @@ const PatientPage: React.FC = () => {
         justifyContent: 'center'          // Center content horizontally
       }}>
         <div style={{ width: '100%', maxWidth: 'calc(100% - 40px)' }}>
-        <PatientTable readmissionLikelihood={readmissionLikelihood} />
         </div>
       </div>
 

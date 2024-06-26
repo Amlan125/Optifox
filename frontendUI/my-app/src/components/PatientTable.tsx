@@ -17,12 +17,12 @@ const MortalityData = [
   { date: '01/06/2024', mortalityLikelihood: false },
 ];
 
+
 const PatientTable: React.FC<PatientTableProps> = ({ readmissionLikelihood }) => {
-   console.log('Readmission Likelihood:', readmissionLikelihood); 
-  // Update Readmissiondata based on readmission likelihood
-  const updatedReadmissionData = Readmissiondata.map(item => ({
+  // Update only the first row of Readmissiondata based on readmission likelihood
+  const updatedReadmissionData = Readmissiondata.map((item, index) => ({
     ...item,
-    readmissionLikelihood: readmissionLikelihood, // Set readmission likelihood based on prop
+    readmissionLikelihood: index === 0 ? readmissionLikelihood : item.readmissionLikelihood, // Update only the first row
   }));
 
   return (

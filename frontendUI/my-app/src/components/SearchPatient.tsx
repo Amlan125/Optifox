@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Card, CardContent, Typography } from '@mui/material';
+import PatientTable from './PatientTable';
 
 interface SearchPatientProps {
   onSearch: (data: any, willBeReadmitted: boolean) => void; // Callback function to handle search and receive patient data and readmission likelihood
@@ -40,7 +41,7 @@ const SearchPatient: React.FC<SearchPatientProps> = ({ onSearch, isDarkMode }) =
       console.log('Fetched data:', data);
       setData(data); // Set fetched data to state
       onSearch(data, data.will_be_readmitted);
-      console.log(data.will_be_readmitted);// Pass fetched data and readmission likelihood to parent component
+      console.log(data.will_be_readmitted); // Pass fetched data and readmission likelihood to parent component
       setLoading(false); // Set loading state to false
     } catch (error) {
       console.error('Error fetching patient details:', error);
@@ -49,10 +50,13 @@ const SearchPatient: React.FC<SearchPatientProps> = ({ onSearch, isDarkMode }) =
     }
   };
 
-  // Function to format date string to a readable format
-  const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+  // Function to format date string to a readable format including time
+  const formatDateTime = (dateTimeString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric', month: 'long', day: 'numeric',
+      hour: 'numeric', minute: 'numeric', second: 'numeric',
+    };
+    return new Date(dateTimeString).toLocaleString(undefined, options);
   };
 
   return (
@@ -75,21 +79,35 @@ const SearchPatient: React.FC<SearchPatientProps> = ({ onSearch, isDarkMode }) =
           Search
         </Button>
       </div>
-      {loading && <p>Loading patient information...</p>}
-      {error && <p>{error}</p>}
-      {data && (
-        <Card style={{ marginTop: '20px', width: '43%' }}>
-          <CardContent>
-            <Typography variant="h5" gutterBottom>Patient Information</Typography>
-            <Typography><strong>Name:</strong> {data.name}</Typography>
-            <Typography><strong>Age:</strong> {data.age}</Typography>
-            <Typography><strong>Gender:</strong> {data.gender}</Typography>
-            <Typography><strong>ICU Length of Stay:</strong> {data.los_hour_int}</Typography>
-            <Typography><strong>In Time:</strong> {formatDate(data.intime)}</Typography>
-            <Typography><strong>Out Time:</strong> {formatDate(data.outtime)}</Typography>
-          </CardContent>
-        </Card>
-      )}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateRows: 'auto auto 1fr',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '20px'
+        }}
+      >
+        {loading && <p>Loading patient information...</p>}
+        {error && <p>{error}</p>}
+        {data && (
+          <>
+            <Card style={{ gridRow: '1', gridColumn: '1', width : '90%' }}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>Patient Information</Typography>
+                <Typography><strong>Name:</strong> {data.name}</Typography>
+                <Typography><strong>Age:</strong> {data.age}</Typography>
+                <Typography><strong>Gender:</strong> {data.gender}</Typography>
+                <Typography><strong>ICU Length of Stay:</strong> {data.los_hour_int}</Typography>
+                <Typography><strong>In Time:</strong> {formatDateTime(data.intime)}</Typography>
+                <Typography><strong>Out Time:</strong> {formatDateTime(data.outtime)}</Typography>
+              </CardContent>
+            </Card>
+            <div style={{ gridRow: '2 / 3', gridColumn: '1 / 3' }}>
+              <PatientTable readmissionLikelihood={data.will_be_readmitted} />
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };
