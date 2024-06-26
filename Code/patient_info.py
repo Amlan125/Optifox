@@ -102,10 +102,13 @@ def fetch_patient_details(stay_id: int) -> Patient:
 
     # Filter patient record based on ICU stay ID
     patient_record = master_patient_data[master_patient_data["stay_id"] == stay_id]
+    patient_record["icu_intime"] = pd.to_datetime(patient_record["icu_intime"])
+    patient_record["icu_outtime"] = pd.to_datetime(patient_record["icu_outtime"])
+    patient_record["icu_intime"] = patient_record["icu_intime"].dt.strftime("%Y-%m-%d %H:%M:%S")
+    patient_record["icu_outtime"] = patient_record["icu_outtime"].dt.strftime("%Y-%m-%d %H:%M:%S")
     if patient_record.empty:
         return None
     patient_record = replace_nan_with_none(patient_record.iloc[0].to_dict())
-
     attributes = {
         "subject_id": patient_record.get("subject_id"),
         "hadm_id": patient_record.get("hadm_id"),
