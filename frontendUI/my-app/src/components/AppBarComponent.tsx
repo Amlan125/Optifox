@@ -55,35 +55,6 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({ onSearchPatient }) =>
         <Typography variant="h6" onClick={handleMenu} style={{ cursor: 'pointer', color: isDarkMode ? '#ffffff' : '#121212' }}>
           Stay ID
         </Typography>
-        <Menu
-          id="menu-appbar"
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          style={{
-            backgroundColor: 'transparent',
-            marginTop: '32px',
-          }}
-        >
-          {patientInfo && (
-            <>
-              <MenuItem onClick={handleClose} style={{ color: isDarkMode ? '#ffffff' : '#000000' }}>Age: {patientInfo.age}</MenuItem>
-              <MenuItem onClick={handleClose} style={{ color: isDarkMode ? '#ffffff' : '#000000' }}>Gender: {patientInfo.gender}</MenuItem>
-              <MenuItem onClick={handleClose} style={{ color: isDarkMode ? '#ffffff' : '#000000' }}>ICU Length of Stay: {patientInfo.los_hour_int} hours</MenuItem>
-              <MenuItem onClick={handleClose} style={{ color: isDarkMode ? '#ffffff' : '#000000' }}>In Time: {new Date(patientInfo.intime).toLocaleDateString()}</MenuItem>
-              <MenuItem onClick={handleClose} style={{ color: isDarkMode ? '#ffffff' : '#000000' }}>Out Time: {new Date(patientInfo.outtime).toLocaleDateString()}</MenuItem>
-            </>
-          )}
-        </Menu>
         <div style={{ flexGrow: 1 }} />
         <LanguageIcon />
         <ThemeToggle />
