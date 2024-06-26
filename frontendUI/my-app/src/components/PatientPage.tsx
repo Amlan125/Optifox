@@ -1,13 +1,20 @@
 "use client";
 
 import React, { useState } from 'react';
-import PatientTable from './PatientTable';
 import { Card, CardContent, Typography } from '@mui/material';
-import SearchPatient from './SearchPatient'; // Import the SearchPatient component
+import SearchPatient from './SearchPatient'; 
+import PatientTable from './PatientTable';
 
 const PatientPage: React.FC = () => {
   const [patientInfo, setPatientInfo] = useState<any>(null); // State to hold patient info
-  const [loading, setLoading] = useState<boolean>(false); // State to manage loading state
+  const [loading, setLoading] = useState<boolean>(false); // State to manage loading state  
+  const [readmissionLikelihood, setReadmissionLikelihood] = useState<boolean>(false); // State to hold readmission likelihood
+
+  // Handle search result
+  const handleSearch = (data: any, will_be_readmitted : boolean) => {
+    setReadmissionLikelihood(will_be_readmitted);
+    console.log('willBeReadmitted', will_be_readmitted); // Update readmission likelihood state
+  };
 
   // Function to fetch patient data from API based on search term
   const fetchPatientData = async (searchTerm: string) => {
@@ -77,18 +84,20 @@ const PatientPage: React.FC = () => {
         {patientInfo && renderJSON(patientInfo)}
         
         {/* Patient Information Card */}
+        {patientInfo && (
           <Card style={{ width: '100%' }}>
             <CardContent>
               <Typography variant="h5" gutterBottom> Patient Information </Typography>
-              <Typography><strong>Search Term:</strong></Typography>
-              <Typography><strong>Name:</strong></Typography>
-              <Typography><strong>Age:</strong></Typography>
-              <Typography><strong>Gender:</strong> </Typography>
-              <Typography><strong>ICU Length of Stay:</strong></Typography>
-              <Typography><strong>In Time:</strong></Typography>
-              <Typography><strong>Out Time:</strong></Typography>
+              <Typography><strong>Search Term:</strong> {patientInfo.searchTerm}</Typography>
+              <Typography><strong>Name:</strong> {patientInfo.name}</Typography>
+              <Typography><strong>Age:</strong> {patientInfo.age}</Typography>
+              <Typography><strong>Gender:</strong> {patientInfo.gender}</Typography>
+              <Typography><strong>ICU Length of Stay:</strong> {patientInfo.icuLengthOfStay}</Typography>
+              <Typography><strong>In Time:</strong> {formatDate(patientInfo.intime)}</Typography>
+              <Typography><strong>Out Time:</strong> {formatDate(patientInfo.outtime)}</Typography>
             </CardContent>
           </Card>
+        )}
       </div>
 
       {/* Table row */}
@@ -99,7 +108,7 @@ const PatientPage: React.FC = () => {
         justifyContent: 'center'          // Center content horizontally
       }}>
         <div style={{ width: '100%', maxWidth: 'calc(100% - 40px)' }}>
-          <PatientTable />
+        <PatientTable readmissionLikelihood={readmissionLikelihood} />
         </div>
       </div>
 

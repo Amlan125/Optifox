@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Card, CardContent, Typography } from '@mui/material';
 
 interface SearchPatientProps {
-  onSearch: (data: any) => void; // Callback function to handle search and receive patient data
+  onSearch: (data: any, willBeReadmitted: boolean) => void; // Callback function to handle search and receive patient data and readmission likelihood
   isDarkMode: boolean; // Flag for dark mode
 }
 
@@ -10,6 +10,7 @@ const SearchPatient: React.FC<SearchPatientProps> = ({ onSearch, isDarkMode }) =
   const [searchTerm, setSearchTerm] = useState<string>(''); // State to hold search term
   const [loading, setLoading] = useState<boolean>(false); // State to manage loading state
   const [error, setError] = useState<string | null>(null); // State to hold error message
+  const [data, setData] = useState<any>(null); // State to hold fetched data
 
   // Function to handle input change
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,9 +20,12 @@ const SearchPatient: React.FC<SearchPatientProps> = ({ onSearch, isDarkMode }) =
   // Function to fetch patient data from API based on search term
   const fetchPatientData = async () => {
     setLoading(true); // Set loading state to true
+    setError(null); // Reset error state
     try {
       if (!searchTerm.trim()) {
         console.warn('Search term is empty');
+        setLoading(false);
+        setError('Search term cannot be empty');
         return;
       }
       console.log(`Search term: ${searchTerm}`);
@@ -34,13 +38,21 @@ const SearchPatient: React.FC<SearchPatientProps> = ({ onSearch, isDarkMode }) =
       }
       const data = await response.json();
       console.log('Fetched data:', data);
-      onSearch(data); // Call the callback function to pass fetched data to parent component
+      setData(data); // Set fetched data to state
+      onSearch(data, data.will_be_readmitted);
+      console.log(data.will_be_readmitted);// Pass fetched data and readmission likelihood to parent component
       setLoading(false); // Set loading state to false
     } catch (error) {
       console.error('Error fetching patient details:', error);
       setError('Error fetching patient details');
       setLoading(false); // Set loading state to false
     }
+  };
+
+  // Function to format date string to a readable format
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   return (
@@ -58,13 +70,26 @@ const SearchPatient: React.FC<SearchPatientProps> = ({ onSearch, isDarkMode }) =
         <Button
           variant="contained"
           onClick={fetchPatientData} // Call fetchPatientData when search button is clicked
-          style={{ backgroundColor: isDarkMode ? '#ffffff' : '#000000', color: isDarkMode ? '#000000' : '#ffffff' }}
+          style={{ backgroundColor: isDarkMode ? '#ffffff' : '#007BA7', color: isDarkMode ? '#000000' : '#ffffff' }}
         >
           Search
         </Button>
       </div>
       {loading && <p>Loading patient information...</p>}
       {error && <p>{error}</p>}
+      {data && (
+        <Card style={{ marginTop: '20px', width: '43%' }}>
+          <CardContent>
+            <Typography variant="h5" gutterBottom>Patient Information</Typography>
+            <Typography><strong>Name:</strong> {data.name}</Typography>
+            <Typography><strong>Age:</strong> {data.age}</Typography>
+            <Typography><strong>Gender:</strong> {data.gender}</Typography>
+            <Typography><strong>ICU Length of Stay:</strong> {data.los_hour_int}</Typography>
+            <Typography><strong>In Time:</strong> {formatDate(data.intime)}</Typography>
+            <Typography><strong>Out Time:</strong> {formatDate(data.outtime)}</Typography>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
