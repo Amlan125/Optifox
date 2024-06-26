@@ -35,7 +35,6 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({ onSearchPatient }) =>
       console.log('Fetching from AppBar:', endpoint);
       console.log('Searching patient with term:', searchTerm);
       const response = await fetch(`/api/v1/patient/${searchTerm}`);
-      console.log(response);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -89,7 +88,6 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({ onSearchPatient }) =>
         <LanguageIcon />
         <ThemeToggle />
         {/* Pass the searchPatient function as a prop to SearchPatient */}
-        <SearchPatient onSearch={fetchPatientData} isDarkMode={isDarkMode} />
       </Toolbar>
     </AppBar>
   );
