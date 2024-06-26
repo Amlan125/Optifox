@@ -30,9 +30,9 @@ const SearchPatient: React.FC<SearchPatientProps> = ({ onSearch, isDarkMode }) =
         return;
       }
       console.log(`Search term: ${searchTerm}`);
-      const endpoint = `http://127.0.0.1:3000/api/v1/patient/${searchTerm}`;
-      console.log('Fetching from SearchPatient:', endpoint);
-      const response = await fetch(endpoint);
+      //const endpoint = `/api/v1/patient/${searchTerm}`;
+      //console.log('Fetching from SearchPatient:', endpoint);
+      const response = await fetch( `http://127.0.0.1:3000/api/v1/patient/${searchTerm}`);
       console.log(response);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
