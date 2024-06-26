@@ -2,30 +2,54 @@ import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import { useThemeContext } from '../context/ThemeContext';
 
-const SearchPatient: React.FC = () => {
+interface SearchPatientProps {
+  onSearch: (searchTerm: string) => void; // Callback function to handle search
+  isDarkMode: boolean; // Flag for dark mode
+}
+
+const SearchPatient: React.FC<SearchPatientProps> = ({ onSearch, isDarkMode }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [patientInfo, setPatientInfo] = useState<any>(null);
-  const { isDarkMode } = useThemeContext();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+ 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+    const value = event.target.value.toString();
+    setSearchTerm(value); // Update searchTerm with the new value
+    console.log(value); // Log the current input value
+    console.log(`Search term in SearchPatient:`, value); // Log the updated searchTerm directly
   };
+  
 
-  const handleSearchClick = async () => {
+  // Function to fetch patient data from API based on search term
+  const fetchPatientData = async (searchTerm: string) => {
+    setLoading(true);
     try {
-      console.log('Searching...', searchTerm);
-      const response = await fetch(`/api/v1/patient/${searchTerm}`);
+      if (typeof searchTerm !== 'string') {
+        console.warn('searchTerm is not a string:', searchTerm);
+        return;
+      }
+      console.log(`Search term: ${searchTerm}`);
+      const endpoint = `http://127.0.0.1:3000/api/v1/patient/${searchTerm}`;
+      console.log('Fetching from SeachPatient:', endpoint);
+      const response = await fetch(`http://127.0.0.1:3000/api/v1/patient/${searchTerm}`);
+      //const response = await fetch(`http://127.0.0.1:3000/api/v1/patient/39880770`);
+      console.log(response);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
+      console.log('Here 1',data);
       setPatientInfo(data);
+      setLoading(false);
     } catch (error) {
-      console.error('Error searching patient:', error);
-      alert('Error fetching patient details');
+      console.error('Error fetching patient details:', error);
+      setError('Error fetching patient details');
+      setLoading(false);
     }
   };
-
   return (
     <div style={{ padding: '20px' }}>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
@@ -39,12 +63,13 @@ const SearchPatient: React.FC = () => {
           style={{ marginRight: '10px' }}
         />
         <Button
-          variant="contained"
-          onClick={handleSearchClick}
-          style={{ backgroundColor: isDarkMode ? '#ffffff' : '#000000', color: isDarkMode ? '#000000' : '#ffffff' }}
-        >
-          Search
-        </Button>
+  variant="contained"
+  onClick={() => fetchPatientData(searchTerm)} // Pass searchTerm to fetchPatientData
+  style={{ backgroundColor: isDarkMode ? '#ffffff' : '#000000', color: isDarkMode ? '#000000' : '#ffffff' }}
+>
+  Search
+</Button>
+
       </div>
       {patientInfo && (
         <div>

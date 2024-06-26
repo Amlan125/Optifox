@@ -7,10 +7,16 @@ import LanguageIcon from './LanguageIcon';
 import { useThemeContext } from '../context/ThemeContext';
 import SearchPatient from './SearchPatient';
 
-const AppBarComponent: React.FC = () => {
+interface AppBarComponentProps {
+  onSearchPatient: (term: string) => void;  // Callback function to handle search term
+}
+
+const AppBarComponent: React.FC<AppBarComponentProps> = ({ onSearchPatient }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [patientInfo, setPatientInfo] = useState<any>(null);
   const { isDarkMode } = useThemeContext();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -20,22 +26,28 @@ const AppBarComponent: React.FC = () => {
     setAnchorEl(null);
   };
 
-  const searchPatient = async (term: string) => {
+   // Function to fetch patient data from API based on search term
+   const fetchPatientData = async (searchTerm: string) => {
+    setLoading(true);
     try {
-      console.log('Searching...', term);
-      const response = await fetch(`/api/v1/patient/${term}`);
+
+      const endpoint = `/api/v1/patient/${searchTerm}`;
+      console.log('Fetching from AppBar:', endpoint);
+      console.log('Searching patient with term:', searchTerm);
+      const response = await fetch(`/api/v1/patient/${searchTerm}`);
+      console.log(response);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
       setPatientInfo(data);
-      handleClose();
+      setLoading(false);
     } catch (error) {
-      console.error('Error searching patient:', error);
-      alert('Error fetching patient details');
+      console.error('Error fetching patient details:', error);
+      setError('Error fetching patient details');
+      setLoading(false);
     }
   };
-
   const appBarBackgroundColor = isDarkMode ? '#121212' : '#03acab';
 
   return (
@@ -76,10 +88,10 @@ const AppBarComponent: React.FC = () => {
         <div style={{ flexGrow: 1 }} />
         <LanguageIcon />
         <ThemeToggle />
-        <SearchPatient onSearch={searchPatient} isDarkMode={isDarkMode} />
+        {/* Pass the searchPatient function as a prop to SearchPatient */}
+        <SearchPatient onSearch={fetchPatientData} isDarkMode={isDarkMode} />
       </Toolbar>
     </AppBar>
-    
   );
 };
 

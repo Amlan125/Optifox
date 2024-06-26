@@ -9,11 +9,15 @@ const PatientPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // Function to fetch patient data from API
-  const fetchPatientData = async () => {
+  // Function to fetch patient data from API based on search term
+  const fetchPatientData = async (searchTerm: string) => {
     setLoading(true);
     try {
-      const response = await fetch('/api/v1/patient');
+      const endpoint = `/api/v1/patient/${searchTerm}`;
+      console.log('Fetching from PatientPage:', endpoint);
+      console.log('Searching patient with term:', searchTerm);
+      const response = await fetch(`/api/v1/patient/${searchTerm}`);
+      console.log(response);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -27,15 +31,15 @@ const PatientPage: React.FC = () => {
     }
   };
 
-  // Fetch patient data on component mount
-  useEffect(() => {
-    fetchPatientData();
-  }, []); // Empty dependency array ensures it runs only once on mount
-
   // Function to format date to a readable string
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
+  };
+
+  // Callback function passed to AppBarComponent to handle search
+  const handleSearchPatient = (term: string) => {
+    fetchPatientData(term);
   };
 
   return (
