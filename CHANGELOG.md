@@ -8,30 +8,13 @@ Dates are noted in ISO [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#
 
 If example content is still displayed, nobody bothered to keep a changelog.  :shrug:
 
-## 1.0.0 (YYYY-MM-DD)
+## 1.0.0 (2024-06-26)
 
-Example content.
 
 ### Added
 
-Added for new features.
+API to fetch prediction data from the pickle file
 
 ### Changed
 
-Changed for changes in existing functionality.
-
-### Deprecated
-
-Deprecated for soon-to-be removed features.
-
-### Removed
-
-Removed for now removed features.
-
-### Fixed
-
-Fixed for any bug fixes.
-
-### Security
-
-Security in case of vulnerabilities.
+Basic info api now fetches human readable intime and outime
