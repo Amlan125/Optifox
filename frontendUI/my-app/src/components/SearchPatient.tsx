@@ -91,7 +91,7 @@ const SearchPatient: React.FC<SearchPatientProps> = ({ onSearch, isDarkMode }) =
         {error && <p>{error}</p>}
         {data && (
           <>
-            <Card style={{ gridRow: '1', gridColumn: '1', width : '90%' }}>
+            <Card style={{ gridRow: '1', gridColumn: '1', width : '90%', }}>
               <CardContent>
                 <Typography variant="h5" gutterBottom>Patient Information</Typography>
                 <Typography><strong>Name:</strong> {data.name}</Typography>

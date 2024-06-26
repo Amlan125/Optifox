@@ -18,42 +18,15 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({ onSearchPatient }) =>
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-   // Function to fetch patient data from API based on search term
-   const fetchPatientData = async (searchTerm: string) => {
-    setLoading(true);
-    try {
-
-      const endpoint = `/api/v1/patient/${searchTerm}`;
-      console.log('Fetching from AppBar:', endpoint);
-      console.log('Searching patient with term:', searchTerm);
-      const response = await fetch(`/api/v1/patient/${searchTerm}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      setPatientInfo(data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching patient details:', error);
-      setError('Error fetching patient details');
-      setLoading(false);
-    }
-  };
+ 
   const appBarBackgroundColor = isDarkMode ? '#121212' : '#03acab';
 
   return (
     <AppBar position="static" style={{ backgroundColor: appBarBackgroundColor }}>
       <Toolbar>
-        <Typography variant="h6" onClick={handleMenu} style={{ cursor: 'pointer', color: isDarkMode ? '#ffffff' : '#121212' }}>
-          Stay ID
+        <Typography variant="h6"  style={{ cursor: 'pointer', color: isDarkMode ? '#ffffff' : '#121212',
+          fontFamily: 'Menlo, sans-serif', }}>
+          OptiFox
         </Typography>
         <div style={{ flexGrow: 1 }} />
         <LanguageIcon />

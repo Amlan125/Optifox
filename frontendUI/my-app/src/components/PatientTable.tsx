@@ -17,7 +17,6 @@ const MortalityData = [
   { date: '01/06/2024', mortalityLikelihood: false },
 ];
 
-
 const PatientTable: React.FC<PatientTableProps> = ({ readmissionLikelihood }) => {
   // Update only the first row of Readmissiondata based on readmission likelihood
   const updatedReadmissionData = Readmissiondata.map((item, index) => ({
@@ -32,15 +31,15 @@ const PatientTable: React.FC<PatientTableProps> = ({ readmissionLikelihood }) =>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell>Readmission Likelihood</TableCell>
+              <TableCell className="font-sans font-medium text-xl">Date</TableCell>
+              <TableCell className="font-sans font-medium text-xl">Readmission Likelihood</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {updatedReadmissionData.map((row, index) => (
               <TableRow key={index} style={{ backgroundColor: row.readmissionLikelihood ? 'red' : 'green' }}>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.readmissionLikelihood.toString()}</TableCell>
+                <TableCell style={{ fontSize: '1rem' }}>{row.date}</TableCell>
+                <TableCell style={{ fontSize: '1rem' }}>{row.readmissionLikelihood.toString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -52,15 +51,15 @@ const PatientTable: React.FC<PatientTableProps> = ({ readmissionLikelihood }) =>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell>Mortality Likelihood</TableCell>
+              <TableCell className="font-sans font-medium text-xl">Date</TableCell>
+              <TableCell className="font-sans font-medium text-xl">Mortality Rate</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {MortalityData.map((row, index) => (
               <TableRow key={index} style={{ backgroundColor: row.mortalityLikelihood ? 'red' : 'green' }}>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.mortalityLikelihood.toString()}</TableCell>
+                <TableCell style={{ fontSize: '1rem' }}>{row.date}</TableCell>
+                <TableCell style={{ fontSize: '1rem' }}>{row.mortalityLikelihood.toString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
