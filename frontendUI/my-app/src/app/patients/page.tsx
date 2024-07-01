@@ -4,7 +4,7 @@ import React from "react";
 import '../styles/globals.css';
 
 const Index = () => {
-  return <div></div>;
+  return <div>Landing Page</div>;
 };
 
 export default Index;
