@@ -9,7 +9,7 @@ import PatientPage from '../../../components/PatientPage';
 
 
 async function fetchPatient(id: any) {
-  const res = await fetch(`http://127.0.0.1:8000/api/v1/patient/${id}`);
+  const res = await fetch(`http://0.0.0.0:3000/api/v1/patient/${id}`);
   const data = await res.json();
   return data;
 }
