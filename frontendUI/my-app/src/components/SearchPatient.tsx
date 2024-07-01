@@ -93,13 +93,12 @@ const SearchPatient: React.FC<SearchPatientProps> = ({ onSearch, isDarkMode }) =
           <>
             <Card style={{ gridRow: '1', gridColumn: '1', width : '90%', }}>
               <CardContent>
-                <Typography variant="h5" gutterBottom>Patient Information</Typography>
-                <Typography><strong>Name:</strong> {data.name}</Typography>
-                <Typography><strong>Age:</strong> {data.age}</Typography>
-                <Typography><strong>Gender:</strong> {data.gender}</Typography>
-                <Typography><strong>ICU Length of Stay:</strong> {data.los_hour_int}</Typography>
-                <Typography><strong>In Time:</strong> {formatDateTime(data.intime)}</Typography>
-                <Typography><strong>Out Time:</strong> {formatDateTime(data.outtime)}</Typography>
+                <Typography  className="font-sans font-medium text-l">Name: {data.name}</Typography>
+                <Typography  className="font-sans font-medium text-l">Age: {data.age}</Typography>
+                <Typography  className="font-sans font-medium text-l">Gender: {data.gender}</Typography>
+                <Typography  className="font-sans font-medium text-l">Length of Stay: {data.los_hour_int}</Typography>
+                <Typography  className="font-sans font-medium text-l">In Time: {formatDateTime(data.intime)}</Typography>
+                <Typography  className="font-sans font-medium text-l">Out Time: {formatDateTime(data.outtime)}</Typography>
               </CardContent>
             </Card>
             <div style={{ gridRow: '2 / 3', gridColumn: '1 / 3' }}>

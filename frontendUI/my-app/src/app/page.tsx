@@ -4,9 +4,10 @@ import PatientPage from '../components/PatientPage';
 
 const HomePage: React.FC = () => {
   return (
-    <Layout>
+    /*<Layout>
       <PatientPage />
-    </Layout>
+    </Layout>*/
+    <p> LOGO HERE </p>
   );
 };
 
