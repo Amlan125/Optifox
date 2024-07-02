@@ -270,3 +270,64 @@ paths:
                   message:
                     type: string
                     example: An unexpected error occurred.
+  /current-patients/{current_time}:
+    get:
+      operationId: "patient_info.get_current_patients"
+      tags:
+        - "Fetch patients in ICU with a timestamp"
+      summary: Get current patient information
+      description: Returns information about patients currently in the ICU at the specified time.
+      parameters:
+        - in: path
+          name: current_time
+          required: true
+          schema:
+            type: string
+            example: "2157-11-20 19:18:02"
+          description: The current time in the format YYYY-MM-DD HH:MM:SS.
+      responses:
+        "200":
+          description: A JSON array of current patients in the ICU
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    patient_id:
+                      type: integer
+                      description: The ID of the patient.
+                    name:
+                      type: string
+                      description: The name of the patient.
+                    age:
+                      type: integer
+                      description: The age of the patient.
+                    icu_intime:
+                      type: string
+                      format: date-time
+                      description: The ICU admission time.
+                    icu_outtime:
+                      type: string
+                      format: date-time
+                      nullable: true
+                      description: The ICU discharge time.
+              examples:
+                example1:
+                  summary: Example response
+                  value:
+                    - patient_id: 1
+                      name: John Doe
+                      age: 45
+                      icu_intime: "2157-11-19T10:15:30"
+                      icu_outtime: null
+                    - patient_id: 2
+                      name: Jane Smith
+                      age: 30
+                      icu_intime: "2157-11-20T12:45:00"
+                      icu_outtime: "2157-11-20T18:00:00"
+        "400":
+          description: Invalid input
+        "500":
+          description: Internal server error
