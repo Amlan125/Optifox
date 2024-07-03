@@ -1,11 +1,8 @@
-// This file defines a reusable SearchBar component.
 import React, { useEffect, useState } from "react";
-
 // Define the props expected by the SearchBar component.
 type SearchBarProps = {
   onSearch: (query: string) => void; // Function to be called when a search is performed.
 };
-
 // Define the style types for the SearchBar component.
 export type SearchStyle = {
   form: string; // Style for the form element.
@@ -13,22 +10,18 @@ export type SearchStyle = {
   icon: string; // Style for the icon itself.
   input: string; // Style for the input element.
 };
-
 // The SearchBar functional component.
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState(""); // State to hold the current query.
-
   // Handle changes to the input field.
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value); // Update the query state with the new value.
-    onSearch(event.target.value); // Trigger the onSearch function passed as a prop.
   };
-
   // Handle the form submission.
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent the default form submission behavior.
+    onSearch(query); // Trigger the onSearch function with the current query.
   };
-
   const classNames: SearchStyle = {
     form: "relative rounded-sm bg-white px-[35px] py-[5px] shadow-md w-[30%]",
     iconContainer:
@@ -37,7 +30,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     input:
       "w-full text-[12px] font-[500] leading-[20px] text-[#374151] outline-none placeholder:text-[#94A3B8]",
   };
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -60,11 +52,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           />
         </svg>
       </div>
-
       <label htmlFor="search" className="sr-only">
         Search Clients
       </label>
-
       <input
         type="text"
         id="search"
@@ -76,5 +66,4 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     </form>
   );
 };
-
 export default SearchBar;
