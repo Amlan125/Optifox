@@ -3,13 +3,29 @@ import React, { useState } from "react";
 import { Card, CardContent, Typography } from "@mui/material";
 import SearchBar from "./SearchBar";
 import { useRouter } from "next/navigation";
-const PatientPage = (props: any) => {
-  const [patientInfo, setPatientInfo] = useState(props.data); // State to hold patient info
+import PatientTable from "./PatientTable";
+
+interface PatientInfo {
+  stay_id: string;
+  name: string;
+  age: number;
+  gender: string;
+  los_hour_int: number;
+  intime: string;
+  outtime: string;
+  will_be_readmitted: boolean; // Add this property
+}
+
+const PatientPage: React.FC<{ data: PatientInfo }> = (props) => {
+  const { data } = props;
   const router = useRouter();
+
   // Handle search result
   const handleSearch = (query: string) => {
     router.push(`/patients/${query}`);
   };
+
+  // Format date function
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
@@ -19,88 +35,84 @@ const PatientPage = (props: any) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-GB", options);
   };
+
   return (
     <div
       style={{
+        position: "relative",
+        height: "80vh",
+        paddingLeft: "20px",
+        paddingRight: "20px",
+        paddingTop: "20px",
+        gap: "20px",
         display: "grid",
-        gridTemplateRows: "auto 1fr auto", // Define grid template rows
-        gridTemplateColumns: "1fr", // Define grid template columns
-        height: "80vh", // Set height of the grid container
-        paddingLeft: "20px", // Set left padding for content alignment
-        paddingRight: "20px", // Set right padding for content alignment
-        paddingTop: "20px", // Set top padding for content alignment
-        gap: "20px", // Set gap between grid items
+        gridTemplateRows: "auto auto 1fr auto",
+        gridTemplateColumns: "1fr 1fr",
       }}
     >
-      {/* Search Patient Row */}
+      {/* Search Bar */}
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr", // Define grid template columns
-          gap: "20px", // Set gap between columns
-          marginBottom: "20px", // Set bottom margin for spacing
+          gridRow: "1 / span 1",
+          gridColumn: "1 / span 2",
+          width: "100%",
         }}
       >
         <SearchBar onSearch={handleSearch} />
       </div>
-      {/* Patient Info Row */}
+
+      {/* Patient Information Card */}
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr", // Define grid template columns
-          gap: "20px", // Set gap between columns
-          marginBottom: "20px", // Set bottom margin for spacing
+          gridRow: "2 / span 1",
+          gridColumn: "1 / span 1",
+          width: "90%",
+          height: "100%",
         }}
       >
-        {/* Print patientInfo for debugging */}
-        {/* {patientInfo && renderJSON(patientInfo)} */}
-        {/* Patient Information Card */}
-        {patientInfo && (
-          <Card style={{ width: "100%" }}>
+        {data && (
+          <Card style={{ width: "100%", height: "100%" }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
-                {" "}
-                Patient Information{" "}
+                Patient Information
               </Typography>
               <Typography>
-                <strong>Search Term:</strong> {patientInfo.stay_id}
+                <strong>Search Term:</strong> {data.stay_id}
               </Typography>
               <Typography>
-                <strong>Name:</strong> {patientInfo.name}
+                <strong>Name:</strong> {data.name}
               </Typography>
               <Typography>
-                <strong>Age:</strong> {patientInfo.age}
+                <strong>Age:</strong> {data.age}
               </Typography>
               <Typography>
-                <strong>Gender:</strong> {patientInfo.gender}
+                <strong>Gender:</strong> {data.gender}
               </Typography>
               <Typography>
-                <strong>ICU Length of Stay:</strong> {patientInfo.los_hour_int}
+                <strong>ICU Length of Stay:</strong> {data.los_hour_int}
               </Typography>
               <Typography>
-                <strong>In Time:</strong> {formatDate(patientInfo.intime)}
+                <strong>In Time:</strong> {formatDate(data.intime)}
               </Typography>
               <Typography>
-                <strong>Out Time:</strong> {formatDate(patientInfo.outtime)}
+                <strong>Out Time:</strong> {formatDate(data.outtime)}
               </Typography>
             </CardContent>
           </Card>
         )}
       </div>
-      {/* Table row */}
+
+      {/* Patient Table */}
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr", // Define grid template columns
-          gap: "20px", // Set gap between columns
-          justifyContent: "center", // Center content horizontally
+          gridRow: "3 / span 1",
+          gridColumn: "1 / span 2",
         }}
       >
-        <div style={{ width: "100%", maxWidth: "calc(100% - 40px)" }}></div>
+        <PatientTable readmissionLikelihood={data.will_be_readmitted} />
       </div>
-      {/* Empty row */}
-      <div style={{ visibility: "hidden" }}></div>
     </div>
   );
 };
+
 export default PatientPage;
