@@ -1,15 +1,14 @@
-// This file defines the HomePage component, which serves as the landing page of the application.
+import React from 'react';
+import Layout from './layout';
+import PatientPage from '../components/PatientPage';
+
 const HomePage: React.FC = () => {
   return (
-    <div>
-      <h1>HomePage</h1>
-    </div>
+    /*<Layout>
+      <PatientPage />
+    </Layout>*/
+    <p> LOGO HERE </p>
   );
 };
 
 export default HomePage;
-
-
-
-
-
