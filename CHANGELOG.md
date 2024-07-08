@@ -18,3 +18,10 @@ API to fetch prediction data from the pickle file
 ### Changed
 
 Basic info api now fetches human readable intime and outime
+
+## 1.0.1 (2024-07-02)
+
+
+### Added
+
+API to fetch prediction data of patient given the time stamp

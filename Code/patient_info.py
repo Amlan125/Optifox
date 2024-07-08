@@ -5,7 +5,7 @@ More details are listed in file README.md.
 
 import os
 import pandas as pd
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from pathlib import Path
 from utils import find_matching_file, replace_nan_with_none
 from flask import abort, jsonify
@@ -80,6 +80,36 @@ class TimeSeriesFeature:
     features: Dict[str, float]
 
 
+def preprocessing_patient_data() -> pd.DataFrame:
+    icustays = pd.read_feather(ICU_STAYS)
+    icutabs = pd.read_feather(ICU_TAB_FEATURES)
+
+    master_patient_data = pd.merge(
+        icustays, icutabs[["subject_id", "anchor_age", "stay_id"]], on="subject_id", how="left"
+    )
+    return master_patient_data
+
+
+def postprocessing_patient_data(patient_record) -> Patient:
+    patient_record = replace_nan_with_none(patient_record.to_dict())
+    attributes = {
+        "subject_id": patient_record.get("subject_id"),
+        "hadm_id": patient_record.get("hadm_id"),
+        "stay_id": patient_record.get("icu_stay_id"),
+        "first_care_unit": patient_record.get("first_careunit"),
+        "los_hour_int": patient_record.get("icu_los"),
+        "gender": patient_record.get("gender"),
+        "age": patient_record.get("anchor_age"),
+        "first_name": patient_record.get("first_name"),
+        "last_name": patient_record.get("last_name"),
+        "main_diagnosis": patient_record.get("main_diagnosis"),
+        "will_be_readmitted": patient_record.get("will_be_readmitted"),
+        "intime": patient_record.get("icu_intime"),
+        "outtime": patient_record.get("icu_outtime"),
+    }
+    return Patient(**attributes)
+
+
 def fetch_patient_details(stay_id: int) -> Patient:
     """Parses patient information based on ICU stay ID.
 
@@ -93,38 +123,25 @@ def fetch_patient_details(stay_id: int) -> Patient:
         Patient:
             A Patient instance with parsed information.
     """
-    icustays = pd.read_feather(ICU_STAYS)
-    icutabs = pd.read_feather(ICU_TAB_FEATURES)
-
-    master_patient_data = pd.merge(
-        icustays, icutabs[["subject_id", "anchor_age", "stay_id"]], on="subject_id", how="left"
-    )
-
+    patinet_df = preprocessing_patient_data()
     # Filter patient record based on ICU stay ID
-    patient_record = master_patient_data[master_patient_data["stay_id"] == stay_id]
+    patient_record = patinet_df[patinet_df["stay_id"] == stay_id]
     patient_record["icu_intime"] = pd.to_datetime(patient_record["icu_intime"])
     patient_record["icu_outtime"] = pd.to_datetime(patient_record["icu_outtime"])
     patient_record["icu_intime"] = patient_record["icu_intime"].dt.strftime("%Y-%m-%d %H:%M:%S")
     patient_record["icu_outtime"] = patient_record["icu_outtime"].dt.strftime("%Y-%m-%d %H:%M:%S")
     if patient_record.empty:
         return None
-    patient_record = replace_nan_with_none(patient_record.iloc[0].to_dict())
-    attributes = {
-        "subject_id": patient_record.get("subject_id"),
-        "hadm_id": patient_record.get("hadm_id"),
-        "stay_id": patient_record.get("stay_id"),
-        "first_care_unit": patient_record.get("first_careunit"),
-        "los_hour_int": patient_record.get("icu_los"),
-        "gender": patient_record.get("gender"),
-        "age": patient_record.get("anchor_age"),
-        "first_name": patient_record.get("first_name"),
-        "last_name": patient_record.get("last_name"),
-        "main_diagnosis": patient_record.get("main_diagnosis"),
-        "will_be_readmitted": patient_record.get("will_be_readmitted"),
-        "intime": patient_record.get("icu_intime"),
-        "outtime": patient_record.get("icu_outtime"),
-    }
-    return Patient(**attributes)
+    basic_data = postprocessing_patient_data(patient_record.iloc[0])
+    return basic_data
+
+
+def patient_to_dict(patient: Patient):
+    patient_dict = asdict(patient)
+    for key in ["intime", "outtime"]:
+        if isinstance(patient_dict[key], pd.Timestamp):
+            patient_dict[key] = patient_dict[key].isoformat()
+    return patient_dict
 
 
 def read_stayid(stay_id):
@@ -177,3 +194,27 @@ def get_time_series_data(stay_id: int, features: str):
         abort(404, description="Time series data not found for the specified stay_id")
 
     return jsonify(data)
+
+
+def get_current_patient_information(current_time: str) -> list[Patient]:
+    current_patients = []
+    patinet_df = preprocessing_patient_data()
+    current_time = pd.to_datetime(current_time)
+    patinet_df["icu_intime"] = pd.to_datetime(patinet_df["icu_intime"])
+    patinet_df["icu_outtime"] = pd.to_datetime(patinet_df["icu_outtime"])
+    currently_in_icu = patinet_df.loc[
+        (patinet_df["icu_intime"] <= current_time)
+        & ((patinet_df["icu_outtime"].isna()) | (patinet_df["icu_outtime"] > current_time))
+    ].copy()
+
+    if currently_in_icu is None:
+        return []
+    for _, row in currently_in_icu.iterrows():
+        current_patients.append(postprocessing_patient_data(row))
+    patients_dicts = [patient_to_dict(patient) for patient in current_patients]
+    return patients_dicts
+
+
+def get_current_patients(current_time):
+    result = get_current_patient_information(current_time)
+    return jsonify(result)
