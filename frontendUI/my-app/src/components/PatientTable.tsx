@@ -39,7 +39,7 @@ const PatientTable: React.FC<PatientTableProps> = ({ readmissionLikelihood }) =>
             {updatedReadmissionData.map((row, index) => (
               <TableRow key={index} style={{ backgroundColor: row.readmissionLikelihood ? 'red' : 'green' }}>
                 <TableCell style={{ fontSize: '1rem' }}>{row.date}</TableCell>
-                <TableCell style={{ fontSize: '1rem' }}>{row.readmissionLikelihood.toString()}</TableCell>
+                <TableCell style={{ fontSize: '1rem' }}>{row.readmissionLikelihood}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -59,7 +59,7 @@ const PatientTable: React.FC<PatientTableProps> = ({ readmissionLikelihood }) =>
             {MortalityData.map((row, index) => (
               <TableRow key={index} style={{ backgroundColor: row.mortalityLikelihood ? 'red' : 'green' }}>
                 <TableCell style={{ fontSize: '1rem' }}>{row.date}</TableCell>
-                <TableCell style={{ fontSize: '1rem' }}>{row.mortalityLikelihood.toString()}</TableCell>
+                <TableCell style={{ fontSize: '1rem' }}>{row.mortalityLikelihood}</TableCell>
               </TableRow>
             ))}
           </TableBody>
