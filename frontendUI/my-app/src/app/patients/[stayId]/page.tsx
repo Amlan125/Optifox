@@ -1,33 +1,18 @@
-// This file defines a next.js component for displaying a single patient's details.
-
 import { notFound } from "next/navigation";
-import SearchBar from "@/components/SearchBar";
-import Layout from '../../layout';
-import PatientPage from '../../../components/PatientPage';
-
-
-
-
+import PatientPage from "../../../components/PatientPage";
 async function fetchPatient(id: any) {
   const res = await fetch(`http://0.0.0.0:3000/api/v1/patient/${id}`);
   const data = await res.json();
   return data;
 }
-
 export default async function SinglePatientPage({ params }: any) {
-  const patient = await fetchPatient(params.stayId);
-  console.log(patient);
-
+  const patient: any = await fetchPatient(params.stayId);
   if (!patient) {
     notFound();
   }
-
   return (
     <div>
-      <h1>{`Stay id: ${patient.stay_id}`}</h1>
-        <Layout>
-          <PatientPage />
-        </Layout>
+      <PatientPage data={patient} />
     </div>
   );
-}
+} 
