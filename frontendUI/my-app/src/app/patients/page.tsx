@@ -3,7 +3,7 @@ import PatientDetail from '@/components/PatientDetail';
 
 async function fetchPatients() {
   const res = await fetch(
-    `http://0.0.0.0:3000/api/v1/current-patients/2131-01-11%2004:20:05`
+    `http://0.0.0.0:3000/api/v1/current-patients/2156-05-11%2014:49:34`
   );
   if (!res.ok) {
     throw new Error('Failed to fetch data');
