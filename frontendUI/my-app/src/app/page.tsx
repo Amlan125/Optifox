@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from './layout';
 import PatientPage from '../components/PatientPage';
+import './globals.css';
 
 const HomePage: React.FC = () => {
   return (
