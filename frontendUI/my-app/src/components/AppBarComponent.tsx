@@ -5,7 +5,7 @@ import { AppBar, Toolbar, Typography, Menu, MenuItem } from '@mui/material';
 import ThemeToggle from './ThemeToggle';
 import LanguageIcon from './LanguageIcon';
 import { useThemeContext } from '../context/ThemeContext';
-import SearchPatient from './SearchPatient';
+// import SearchPatient from './SearchPatient';
 
 interface AppBarComponentProps {
   onSearchPatient: (term: string) => void;  // Callback function to handle search term
