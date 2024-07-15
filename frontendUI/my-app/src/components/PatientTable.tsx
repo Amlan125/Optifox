@@ -1,71 +1,80 @@
-import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Grid, Typography, Paper } from '@mui/material';
+import GradientLegend from './GradientLegend'; // Ensure this import path is correct
 
 interface PatientTableProps {
-  readmissionLikelihood: boolean; // Readmission likelihood to display
+  readmissionLikelihood: boolean,
+  lengthOfStay: number;
+  stayId: string;
 }
 
-const Readmissiondata = [
-  { date: '03/06/2024', readmissionLikelihood: false },
-  { date: '02/06/2024', readmissionLikelihood: true },
-  { date: '01/06/2024', readmissionLikelihood: false },
-];
+const PatientTable: React.FC<PatientTableProps> = ({ readmissionLikelihood, lengthOfStay, stayId }) => {
+  const [patientData, setPatientData] = useState<{ date: string; readmissionLikelihood: number; mortalityLikelihood: number }[]>([]);
 
-const MortalityData = [
-  { date: '03/06/2024', mortalityLikelihood: true },
-  { date: '02/06/2024', mortalityLikelihood: true },
-  { date: '01/06/2024', mortalityLikelihood: false },
-];
+  useEffect(() => {
+    // Generate new random likelihoods when stayId changes
+    const newPatientData = Array.from({ length: 6 }, (_, index) => ({
+      date: subtractDays(index),
+      readmissionLikelihood: Math.floor(Math.random() * 11),
+      mortalityLikelihood: Math.floor(Math.random() * 11),
+    }));
+    setPatientData(newPatientData);
+  }, [stayId]);
 
-const PatientTable: React.FC<PatientTableProps> = ({ readmissionLikelihood }) => {
-  // Update only the first row of Readmissiondata based on readmission likelihood
-  const updatedReadmissionData = Readmissiondata.map((item, index) => ({
-    ...item,
-    readmissionLikelihood: index === 0 ? readmissionLikelihood : item.readmissionLikelihood, // Update only the first row
-  }));
+  const subtractDays = (days: number) => {
+    const date = new Date();
+    date.setDate(date.getDate() - days);
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  };
+
+  // Generate SVG gradient stops as HTML string for readmission
+  const generateGradientStopsReadmission = () => {
+    return patientData.map((data, index) => {
+      const offset = (index / (patientData.length - 1)) * 100;
+      const hue = 120 * (1 - (data.readmissionLikelihood / 10)); // 120 (green) to 0 (red)
+      return `<stop offset="${offset}%" stop-color="hsl(${hue}, 100%, 50%)" />`;
+    }).join('');
+  };
+
+  // Generate SVG gradient stops as HTML string for mortality
+  const generateGradientStopsMortality = () => {
+    return patientData.map((data, index) => {
+      const offset = (index / (patientData.length - 1)) * 100;
+      const hue = 120 * (1 - (data.mortalityLikelihood / 10)); // 120 (green) to 0 (red)
+      return `<stop offset="${offset}%" stop-color="hsl(${hue}, 100%, 50%)" />`;
+    }).join('');
+  };
+
+  const gradientHtmlReadmission = `<linearGradient id="gradReadmission">${generateGradientStopsReadmission()}</linearGradient>`;
+  const gradientHtmlMortality = `<linearGradient id="gradMortality">${generateGradientStopsMortality()}</linearGradient>`;
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-      {/* Readmission Table */}
-      <TableContainer component={Paper} style={{ width: '45%', marginTop: '20px', marginRight: '10px' }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell className="font-sans font-medium text-xl">Date</TableCell>
-              <TableCell className="font-sans font-medium text-xl">Readmission Likelihood</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {updatedReadmissionData.map((row, index) => (
-              <TableRow key={index} style={{ backgroundColor: row.readmissionLikelihood ? 'red' : 'green' }}>
-                <TableCell style={{ fontSize: '1rem' }}>{row.date}</TableCell>
-                <TableCell style={{ fontSize: '1rem' }}>{row.readmissionLikelihood}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      {/* Mortality Table */}
-      <TableContainer component={Paper} style={{ width: '45%', marginTop: '20px', marginRight: '10px' }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell className="font-sans font-medium text-xl">Date</TableCell>
-              <TableCell className="font-sans font-medium text-xl">Mortality Rate</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {MortalityData.map((row, index) => (
-              <TableRow key={index} style={{ backgroundColor: row.mortalityLikelihood ? 'red' : 'green' }}>
-                <TableCell style={{ fontSize: '1rem' }}>{row.date}</TableCell>
-                <TableCell style={{ fontSize: '1rem' }}>{row.mortalityLikelihood}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Paper style={{ marginTop: '20px', padding: '20px', backgroundColor: '#E4D1CE' }}>
+          <Typography variant="h6" gutterBottom style={{ color: '#333333' }}>
+          </Typography>
+          <Typography variant="subtitle1" style={{ color: '#333' }}>
+            Readmission Likelihood
+          </Typography>
+          <svg width="100%" height="50">
+            <defs dangerouslySetInnerHTML={{ __html: gradientHtmlReadmission }} />
+            <rect width="100%" height="50" fill="url(#gradReadmission)" />
+          </svg>
+          <Typography variant="subtitle1" style={{ color: '#333', marginTop: '20px' }}>
+            Mortality Likelihood
+          </Typography>
+          <svg width="100%" height="50">
+            <defs dangerouslySetInnerHTML={{ __html: gradientHtmlMortality }} />
+            <rect width="100%" height="50" fill="url(#gradMortality)" />
+          </svg>
+        </Paper>
+      </Grid>
+      {/* GradientLegend outside the Paper but still within the grid */}
+      <Grid item xs={12} style={{ marginTop: '20px' }}>
+        <GradientLegend />
+      </Grid>
+    </Grid>
   );
 };
 
