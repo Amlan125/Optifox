@@ -46,7 +46,7 @@ const PatientPage: React.FC<{ data: PatientInfo }> = ({ data }) => {
     <div
       style={{
         position: 'relative',
-        height: '80vh',
+        height: '90vh',
         paddingLeft: '20px',
         paddingRight: '20px',
         paddingTop: '20px',
@@ -58,12 +58,12 @@ const PatientPage: React.FC<{ data: PatientInfo }> = ({ data }) => {
     >
       {/* Readmission status component */}
       <div style={{ gridColumn: '1 / span 1', paddingTop: '50px' }}>
-        <ReadmissionStatus will_be_readmitted={data.will_be_readmitted} mortality_rate={14} />
+        <ReadmissionStatus will_be_readmitted={data.will_be_readmitted} mortality_rate={Math.floor(Math.random() * 100) + 1} />
       </div>
 
       {/* Card displaying 'Past 6 days data' in 2nd row, 1st column */}
       <div style={{ gridColumn: '1 / span 1', gridRow: '2 / span 1' }}>
-        <Card style={{ height: '68%', width: 'auto' }}>
+        <Card style={{ height: '88%', width: 'auto' }}>
           <CardContent>
             <Typography variant="h6">Past 6 days data</Typography>
             {data && (
@@ -118,6 +118,7 @@ const PatientPage: React.FC<{ data: PatientInfo }> = ({ data }) => {
           </Card>
         )}
       </div>
+
 
       {/* Search bar */}
       <div

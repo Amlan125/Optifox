@@ -7,10 +7,21 @@ interface ReadmissionStatusProps {
 }
 
 const ReadmissionStatus: React.FC<ReadmissionStatusProps> = ({ will_be_readmitted, mortality_rate }) => {
+  // Function to calculate color based on mortality rate
+  const getColorForMortality = (rate: number) => {
+    const hue = (100 - rate) * 120 / 100; // Calculate hue from green (120) to red (0)
+    return `hsl(${hue}, 100%, 50%)`; // Return HSL color string
+  };
+
+  // Function to determine color based on readmission likelihood
+  const getColorForReadmission = (readmitted: boolean) => {
+    return readmitted ? '#FF6B6B' : '#4CAF50'; // Red for readmitted, green for not readmitted
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
-        <Paper style={{ height: '200px', marginTop: '20px', padding: '20px' }}>
+        <Paper style={{ height: '250px', marginTop: '20px', padding: '20px' }}>
           <Typography variant="h6" gutterBottom style={{ marginBottom: '10px' }}>
             Readmission Status
           </Typography>
@@ -18,8 +29,8 @@ const ReadmissionStatus: React.FC<ReadmissionStatusProps> = ({ will_be_readmitte
             <div
               style={{
                 width: '100%',
-                height: '65%', // Adjusted height here
-                backgroundColor: will_be_readmitted ? '#FF6B6B' : '#4CAF50',
+                height: '65%',
+                backgroundColor: getColorForReadmission(will_be_readmitted),
                 borderRadius: '8px',
                 display: 'flex',
                 alignItems: 'center',
@@ -37,7 +48,7 @@ const ReadmissionStatus: React.FC<ReadmissionStatusProps> = ({ will_be_readmitte
         </Paper>
       </Grid>
       <Grid item xs={6}>
-        <Paper style={{ height: '200px', marginTop: '20px', padding: '20px' }}>
+        <Paper style={{ height: '250px', marginTop: '20px', padding: '20px' }}>
           <Typography variant="h6" gutterBottom style={{ marginBottom: '10px' }}>
             Mortality Rate
           </Typography>
@@ -45,8 +56,8 @@ const ReadmissionStatus: React.FC<ReadmissionStatusProps> = ({ will_be_readmitte
             <div
               style={{
                 width: '100%',
-                height: '65%', // Adjusted height here
-                backgroundColor: mortality_rate > 10 ? '#FF6B6B' : '#4CAF50',
+                height: '65%',
+                backgroundColor: getColorForMortality(mortality_rate),
                 borderRadius: '8px',
                 display: 'flex',
                 alignItems: 'center',
@@ -58,7 +69,7 @@ const ReadmissionStatus: React.FC<ReadmissionStatusProps> = ({ will_be_readmitte
                 boxSizing: 'border-box',
               }}
             >
-              {mortality_rate}
+              {mortality_rate}%
             </div>
           </Grid>
         </Paper>
