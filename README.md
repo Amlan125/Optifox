@@ -96,7 +96,7 @@ This is an example of how to list things you need to use the software and how to
 Give a brief overview of the project's structure by visualising the (sub-)folder structure and how files interact with each other.
 
  ```
-Xitaso/
+Optifox/
 ├── code/
 │ ├── server.py
 │ ├── templates/
