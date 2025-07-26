@@ -1,9 +1,4 @@
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://mad-srv.informatik.uni-erlangen.de/InnoLab/ss24/xitaso">
-    <img src="https://mad-srv.informatik.uni-erlangen.de/InnoLab/ss24/xitaso/-/wikis/uploads/5e364a48a092b233a8b2c6ac94507011/OptiFox.png" alt="Logo" width="160" height="160">
-  </a>
+
 
 <h3 align="center">OptiFox(Xitaso)</h3>
 
@@ -57,15 +52,11 @@ Give a brief introduction into the project.
 <!-- CONTACT -->
 ### Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
-
 Project Link: [https://mad-srv.informatik.uni-erlangen.de/InnoLab/ss24/xitaso](https://mad-srv.informatik.uni-erlangen.de/InnoLab/ss24/xitaso)
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
 
 ### Prerequisites
 
@@ -143,23 +134,6 @@ Optifox/
 ![Project RoadMap](Code/static/img/roadmap.png)
 
 
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://github.com/github_username/repo_name/-/wikis/)_
-
-
-<!-- Contributing -->
-
-## Contributing
-
-Contributions to the project are welcome! When submitting a merge request, please ensure the following:
-
-1. File Organization: Place new files in their appropriate directories according to the project structure outlined above.
-
-2. Test Cases: Include test cases that cover the changes introduced by your merge request in the tests/ directory.
 
 <!-- LICENSE -->
 ## License
@@ -167,14 +141,5 @@ Contributions to the project are welcome! When submitting a merge request, pleas
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-Use this space to list resources you find helpful and would like to give credit to.
-* []()
-* []()
-* []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
