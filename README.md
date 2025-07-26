@@ -95,6 +95,7 @@ This is an example of how to list things you need to use the software and how to
 ## Project Structure
 Give a brief overview of the project's structure by visualising the (sub-)folder structure and how files interact with each other.
 
+ ```
 Xitaso/
 ├── code/
 │ ├── server.py
@@ -116,7 +117,7 @@ Xitaso/
 ├── .devcontainer/
 ├── Dockerfile
 ├── README.md
-
+```
 
 - **code/**: Directory for the project's source code.
     - **server.py**: Contains the Flask application code.
